@@ -1,4 +1,4 @@
-//Nason Lewis, Carlos Rivera
+//Nason Lewis, Carlos Rivera <----- This guy is the reason the code is so bad.
 import java.awt.*;
 import java.awt.event.*;
 import java.applet.*;
