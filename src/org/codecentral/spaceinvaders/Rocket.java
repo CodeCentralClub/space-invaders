@@ -2,7 +2,7 @@ package org.codecentral.spaceinvaders;
 
 import java.awt.*;
 
-class shoot {
+public class Rocket {
     int x = 100000;
     int y = 100000;
 

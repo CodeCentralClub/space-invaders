@@ -1,3 +1,5 @@
+package org.codecentral.spaceinvaders;
+
 import java.awt.*;
 
 /**
@@ -5,9 +7,11 @@ import java.awt.*;
  */
 public class SpaceInvaders extends Panel {
 
-    Image image;
-
-    Graphics graphics;
+    private Image image;
+    private Graphics graphics;
+    private Player player = new Player();
+    private Rocket b = new Rocket();
+    private Alien a = new Alien();
 
     public static void main(String[] args) {
         Frame f = new Frame();
@@ -16,33 +20,26 @@ public class SpaceInvaders extends Panel {
                 System.exit(0);
             }
         });
-        SpaceInvaders window = new SpaceInvaders();  //change gameStart to your file name (two times on this line)
+        SpaceInvaders window = new SpaceInvaders();
         window.setSize(1000, 650);
         f.add(window);
         f.pack();
         window.init();
-        f.setSize(1265, 950);/*size of frame*/
-        f.show();
+        f.setSize(1265, 950);
+        f.setVisible(true);
     }
 
     public void update(Graphics g) {
-
         if (image == null) {
             image = createImage(this.getWidth(), this.getHeight());
             graphics = image.getGraphics();
         }
-
         graphics.setColor(getBackground());
 
         graphics.fillRect(0, 0, getWidth(), this.getHeight());
         paint(graphics);
         g.drawImage(image, 0, 0, this);
     }
-    //declare variables here
-
-    player u = new player();
-    shoot b = new shoot();
-    alien a = new alien();
 
 
     public void init() {
@@ -50,17 +47,17 @@ public class SpaceInvaders extends Panel {
     }
 
     public void paint(Graphics g) {
-        u.background(g);
+        player.background(g);
         a.draw(g);
         a.death(b);
-        u.death(a, g);
+        player.death(a, g);
         a.move(g);
         a.shoot(g);
         a.wall();
-        u.wall();
+        player.wall();
         b.draw(g);
-        u.move(b);
-        u.draw(g);
+        player.move(b);
+        player.draw(g);
         delay(20);
         repaint();
     }
@@ -69,7 +66,9 @@ public class SpaceInvaders extends Panel {
     public static void delay(int n) {
         long startDelay = System.currentTimeMillis();
         long endDelay = 0;
-        while (endDelay - startDelay < n) endDelay = System.currentTimeMillis();
+        while (endDelay - startDelay < n) {
+            endDelay = System.currentTimeMillis();
+        }
     }
 
     @Override

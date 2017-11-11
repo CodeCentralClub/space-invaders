@@ -2,7 +2,7 @@ package org.codecentral.spaceinvaders;
 
 import java.awt.*;
 
-class barriers {
+public class Barrier {
     int x = 200;
     int y = 700;
 

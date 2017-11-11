@@ -2,7 +2,7 @@ package org.codecentral.spaceinvaders;
 
 import java.awt.*;
 
-class player {
+public class Player {
     int x = 550;
     int x2 = 900;
     int x3 = 800;
@@ -13,7 +13,7 @@ class player {
     int y4 = 50;
     int e = 0;
 
-    public void death(alien a, Graphics g) {
+    public void death(Alien a, Graphics g) {
 
         if (a.ya >= y - 200 && a.ya <= y - 169 && a.xa >= x - 400 && a.xa <= x + 100) {
             x += 10000;
@@ -80,7 +80,7 @@ class player {
         g.fillRect(x4 + 33, y4 - 20, 6, 37);
     }
 
-    public void move(shoot b) {
+    public void move(Rocket b) {
         if (e == 0) {
             if (InputHandler.RIGHT) {
                 x += 15;

@@ -2,7 +2,7 @@ package org.codecentral.spaceinvaders;
 
 import java.awt.*;
 
-class InputHandler {
+public class InputHandler {
 
     public InputHandler() {
     }

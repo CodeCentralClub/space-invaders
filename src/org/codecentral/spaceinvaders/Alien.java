@@ -1,6 +1,8 @@
 package org.codecentral.spaceinvaders;
 
-class alien {
+import java.awt.*;
+
+public class Alien {
     int x = 350;
     int x2 = 350;
     int x3 = 350;
@@ -928,7 +930,7 @@ class alien {
 
     }
 
-    public void death(shoot b) {
+    public void death(Rocket b) {
         if (InputHandler.X) {
             x = 350;
             x2 = 350;
