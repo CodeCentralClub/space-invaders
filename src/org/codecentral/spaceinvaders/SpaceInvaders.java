@@ -1,18 +1,49 @@
 package org.codecentral.spaceinvaders;
 
-import java.awt.*;
+import org.codecentral.spaceinvaders.objects.Alien;
+import org.codecentral.spaceinvaders.objects.Barrier;
+import org.codecentral.spaceinvaders.objects.Player;
+
+import java.awt.Event;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Panel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * @author Nason Lewis, Carlos Rivera
+ * @author Nason Lewis, Carlos Rivera, Willie Chalmers III
+ * @version 1.0.0
  */
 public class SpaceInvaders extends Panel {
 
+    private static final int DEFAULT_BARRIER_COUNT = 4;
+    private static final int DEFAULT_ALIEN_COUNT = 4 * 11;
+    private static final int DELAY = 20;
+
+    /**
+     * The initial width for the window upon launch.
+     */
+    private static final int DEFAULT_WIDTH = 1265;
+
+    /**
+     * The initial height for the window upon launch
+     */
+    private static final int DEFAULT_HEIGHT = 950;
+
     private Image image;
     private Graphics graphics;
-    private Player player = new Player();
-    private Rocket b = new Rocket();
-    private Alien a = new Alien();
+    private Player player;
+    private List<Alien> aliens = new ArrayList<>();
+    private List<Barrier> barriers = new ArrayList<>();
 
+    /**
+     * Starts the program
+     */
     public static void main(String[] args) {
         Frame f = new Frame();
         f.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -21,49 +52,68 @@ public class SpaceInvaders extends Panel {
             }
         });
         SpaceInvaders window = new SpaceInvaders();
-        window.setSize(1000, 650);
+        window.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        window.init();
         f.add(window);
         f.pack();
-        window.init();
-        f.setSize(1265, 950);
+        f.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         f.setVisible(true);
     }
 
+    @Override
     public void update(Graphics g) {
+        super.update(g);
         if (image == null) {
-            image = createImage(this.getWidth(), this.getHeight());
+            image = createImage(getWidth(), getHeight());
             graphics = image.getGraphics();
         }
         graphics.setColor(getBackground());
-
-        graphics.fillRect(0, 0, getWidth(), this.getHeight());
+        graphics.fillRect(0, 0, getWidth(), getHeight());
         paint(graphics);
         g.drawImage(image, 0, 0, this);
     }
 
 
-    public void init() {
-
-    }
-
+    @Override
     public void paint(Graphics g) {
-        player.background(g);
-        a.draw(g);
-        a.death(b);
-        player.death(a, g);
-        a.move(g);
-        a.shoot(g);
-        a.wall();
-        player.wall();
-        b.draw(g);
-        player.move(b);
-        player.draw(g);
-        delay(20);
+        updateObjects(g);
+        delay(DELAY);
         repaint();
     }
 
+    /**
+     * Initializes the game by loading and positioning {@link org.codecentral.spaceinvaders.objects.GameObject}s
+     */
+    private void init() {
+        addKeyListener(player); // Lets player respond to keyboard input
+        player = new Player(getWidth() / 2, getHeight() - 100);
+        placeAliens();
+        placeBarriers();
+    }
 
-    public static void delay(int n) {
+    private void updateObjects(Graphics g) {
+        player.onDraw(g);
+        for (Alien alien : aliens) {
+            alien.move();
+            alien.onDraw(graphics);
+        }
+        barriers.forEach(barrier -> barrier.onDraw(g));
+        // TODO: Use callback to handle collisions
+    }
+
+    private void placeBarriers() {
+        for (int i = 0; i < DEFAULT_BARRIER_COUNT; i++) {
+            barriers.add(new Barrier(200 + 300 * i, 700));
+        }
+    }
+
+    private void placeAliens() {
+        aliens.addAll(Stream.generate(() -> new Alien(100, 350)).limit(DEFAULT_ALIEN_COUNT)
+                .collect(Collectors.toList()));
+        // TODO: Populate the aliens with some loops
+    }
+
+    private static void delay(int n) {
         long startDelay = System.currentTimeMillis();
         long endDelay = 0;
         while (endDelay - startDelay < n) {
@@ -100,6 +150,5 @@ public class SpaceInvaders extends Panel {
     public boolean keyUp(Event e, int key) {
         return InputHandler.keyChange(e, key, false);
     }
-
 }
 
