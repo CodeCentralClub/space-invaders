@@ -13,6 +13,9 @@ import java.awt.event.KeyListener;
  */
 public class Player extends GameObject implements KeyListener {
 
+    private static final int DEFAULT_WIDTH = 128;
+
+    private static final int DEFAULT_HEIGHT = 128;
 
     /**
      * Creates a new player at the given x and y coordinates.
@@ -21,7 +24,12 @@ public class Player extends GameObject implements KeyListener {
      * @param y The initial y coordinate, starting from the top of the screen
      */
     public Player(int x, int y) {
-        super(x, y);
+        super(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    @Override
+    public void onUpdate() {
+
     }
 
     @Override

@@ -10,9 +10,9 @@ import java.awt.Graphics;
  */
 public class Barrier extends GameObject {
 
-    private static final int HEIGHT = 70;
+    private static final int DEFAULT_WIDTH = 70;
 
-    private static final int WIDTH = 40;
+    private static final int DEFAULT_HEIGHT = 100;
 
     /**
      * Creates a new barrier at the given x and y coordinates.
@@ -21,14 +21,14 @@ public class Barrier extends GameObject {
      * @param y The initial y coordinate, starting from the top of the screen
      */
     public Barrier(int x, int y) {
-        super(x, y);
+        super(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     @Override
     public void onDraw(Graphics g) {
         g.setColor(Color.GREEN);
-        g.fillRect(getX(), getY(), WIDTH, HEIGHT);
-        g.fillRect(getX(), getY(), WIDTH, HEIGHT);
-        g.fillRect(getX() + WIDTH, getY(), WIDTH, HEIGHT);
+        g.fillRect(getX(), getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        g.fillRect(getX(), getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        g.fillRect(getX() + DEFAULT_WIDTH, getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 }
