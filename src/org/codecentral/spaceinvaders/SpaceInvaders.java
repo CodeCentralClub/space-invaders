@@ -4,16 +4,20 @@ import org.codecentral.spaceinvaders.objects.Alien;
 import org.codecentral.spaceinvaders.objects.Barrier;
 import org.codecentral.spaceinvaders.objects.Player;
 
+import java.awt.Dimension;
 import java.awt.Event;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.swing.JFrame;
 
 /**
  * @author Nason Lewis, Carlos Rivera, Willie Chalmers III
@@ -21,22 +25,12 @@ import java.util.stream.Stream;
  */
 public class SpaceInvaders extends Panel {
 
+    private static final String NAME = "Space Invaders";
+
     private static final int DEFAULT_BARRIER_COUNT = 4;
     private static final int DEFAULT_ALIEN_COUNT = 4 * 11;
     private static final int DELAY = 20;
 
-    /**
-     * The initial width for the window upon launch.
-     */
-    private static final int DEFAULT_WIDTH = 1265;
-
-    /**
-     * The initial height for the window upon launch
-     */
-    private static final int DEFAULT_HEIGHT = 950;
-
-    private Image image;
-    private Graphics graphics;
     private Player player;
     private List<Alien> aliens = new ArrayList<>();
     private List<Barrier> barriers = new ArrayList<>();
@@ -45,34 +39,22 @@ public class SpaceInvaders extends Panel {
      * Starts the program
      */
     public static void main(String[] args) {
-        Frame f = new Frame();
-        f.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
+        JFrame f = new JFrame(NAME);
+        f.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
-        SpaceInvaders window = new SpaceInvaders();
-        window.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        window.init();
-        f.add(window);
+        SpaceInvaders game = new SpaceInvaders();
+        f.add(game);
+        game.init();
         f.pack();
-        f.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        f.setExtendedState(f.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        f.setSize(screenSize.width - 100, screenSize.height - 100);
         f.setVisible(true);
     }
-
-    @Override
-    public void update(Graphics g) {
-        super.update(g);
-        if (image == null) {
-            image = createImage(getWidth(), getHeight());
-            graphics = image.getGraphics();
-        }
-        graphics.setColor(getBackground());
-        graphics.fillRect(0, 0, getWidth(), getHeight());
-        paint(graphics);
-        g.drawImage(image, 0, 0, this);
-    }
-
 
     @Override
     public void paint(Graphics g) {
@@ -95,7 +77,7 @@ public class SpaceInvaders extends Panel {
         player.onDraw(g);
         for (Alien alien : aliens) {
             alien.move();
-            alien.onDraw(graphics);
+            alien.onDraw(getGraphics());
         }
         barriers.forEach(barrier -> barrier.onDraw(g));
         // TODO: Use callback to handle collisions
