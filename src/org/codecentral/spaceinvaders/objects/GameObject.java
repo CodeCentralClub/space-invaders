@@ -11,18 +11,17 @@ abstract class GameObject {
 
     private Point position;
 
-    /**
-     * Creates a new game object at the given coordinates.
-     *
-     * @param x The initial x coordinate, starting from the left of screen
-     * @param y The initial y coordinate, starting from the top of the screen
-     */
-    public GameObject(int x, int y) {
-        this(new Point(x, y));
+    private int width;
+    private int height;
+
+    public GameObject(int x, int y, int width, int height) {
+        this(new Point(x, y), width, height);
     }
 
-    public GameObject(Point position) {
+    public GameObject(Point position, int width, int height) {
         this.position = position;
+        this.width = width;
+        this.height = height;
     }
 
     public int getX() {
@@ -41,10 +40,31 @@ abstract class GameObject {
         position.setLocation(getX(), y);
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     /**
-     * Requests this game object to draw itself onto the screen.
-     *
-     * @param g The root graphics object where all images are drawn
+     * Updates game logic and prepare for a redraw.
+     */
+    public void onUpdate() {
+
+    }
+
+    /**
+     * Redraws currently displayed graphics.
      */
     public abstract void onDraw(Graphics g);
 
@@ -68,9 +88,5 @@ abstract class GameObject {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "[x=" + getX() + ",y=" + getY() + "]";
-    }
-
-    public enum Direction {
-        LEFT, RIGHT, UP, DOWN;
     }
 }
