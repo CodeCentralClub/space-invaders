@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * The base class for all displayable on-screen components.
  */
-abstract class GameObject {
+abstract class GameObject implements CollisionDetector {
 
     private Point position;
 
@@ -67,6 +67,11 @@ abstract class GameObject {
      * Redraws currently displayed graphics.
      */
     public abstract void onDraw(Graphics g);
+
+    @Override
+    public boolean checkCollision(GameObject object) {
+        return checkCollision(this, object);
+    }
 
     @Override
     public int hashCode() {
